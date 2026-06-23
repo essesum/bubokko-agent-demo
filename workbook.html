@@ -91,7 +91,7 @@ button.primary{background:linear-gradient(135deg,var(--amber),#e0860f);color:#18
 .prompt{margin-top:12px;background:#08080a;border:1px solid var(--line);border-radius:10px;padding:12px;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#bfe9dd;white-space:pre-wrap;line-height:1.55}
 .note{width:100%;margin-top:10px;background:#08080a;border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px;font-family:var(--font);font-size:13px;resize:vertical;min-height:60px}
 
-.map{aspect-ratio:16/6.6;width:100%;background:repeating-linear-gradient(0deg,#0c0c0f,#0c0c0f 23px,#121218 24px),repeating-linear-gradient(90deg,#0c0c0f,#0c0c0f 23px,#121218 24px);border:1px solid var(--line);border-radius:14px}
+.map{aspect-ratio:1000/440;width:100%;max-width:920px;margin:0 auto;display:block;background:repeating-linear-gradient(0deg,#0c0c0f,#0c0c0f 23px,#121218 24px),repeating-linear-gradient(90deg,#0c0c0f,#0c0c0f 23px,#121218 24px);border:1px solid var(--line);border-radius:14px}
 .legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--mut);font-size:12px;margin-top:10px}
 .legend i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
 
@@ -175,12 +175,13 @@ button.primary{background:linear-gradient(135deg,var(--amber),#e0860f);color:#18
     <div class="pane detail"><h3 id="dTitle">Выбери кадр</h3><div id="detail"></div></div>
   </div>
 
-  <div class="sec-title">Карта мизансцены <small>камера + вектор взгляда</small></div>
-  <svg class="map" id="map" viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid meet"></svg>
+  <div class="sec-title">Мизансцена кадра <small>вид сверху · камера, оптика, движение — по выбранному кадру</small></div>
+  <svg class="map" id="map" viewBox="0 0 1000 440" preserveAspectRatio="xMidYMid meet"></svg>
   <div class="legend">
-    <span><i style="background:var(--vio3)"></i>БубOkko</span>
-    <span><i style="background:var(--amber)"></i>Камера + конус движения</span>
-    <span><i style="background:var(--teal)"></i>Направление взгляда</span>
+    <span><i style="background:var(--vio3)"></i>БубOkko (рост ≈2.2 м)</span>
+    <span><i style="background:var(--amber)"></i>Камера + конус объектива (шире = короче фокус)</span>
+    <span><i style="background:var(--teal)"></i>Ось взгляда «в камеру» · движение камеры</span>
+    <span style="opacity:.7">Кликни кадр слева — план обновится</span>
   </div>
 
   <div class="sec-title">API-Payload Pack <small>Kling / Seedance 2.0 — пример для тех-команды (Кадр 01)</small></div>
@@ -310,18 +311,60 @@ function select(i){
 }
 
 function drawMap(active){
-  const m=document.getElementById('map'),W=1000,seg=W/SHOTS.length;
+  const m=document.getElementById('map'); const s=SHOTS[active]; if(!s){m.innerHTML='';return;}
+  // --- parse cinematography from shot fields ---
+  const mm = (s.lens.match(/(\d+)\s*mm/)||[])[1] ? +(s.lens.match(/(\d+)\s*mm/)[1]) : (/macro/i.test(s.lens)?100:50);
+  const fovMap=[[24,74],[28,65],[35,54],[50,40],[85,24],[100,20]];
+  let fov=40; for(const [a,f] of fovMap){ if(mm<=a){fov=f;break;} if(mm>=100)fov=20; }
+  const fr=(s.frame.match(/ECU|MWS|MCU|WS|CU|MS|Macro/i)||['MS'])[0].toUpperCase();
+  const gapMap={ECU:70,MACRO:70,CU:108,MCU:138,MS:168,MWS:198,WS:218};
+  const gap=gapMap[fr]||168;
+  const lc=s.mov.toLowerCase();
+  let move='static';
+  if(/dolly-in|наезд|push/.test(lc)) move='in';
+  else if(/dolly-out|отъезд/.test(lc)) move='out';
+  else if(/track|панорам/.test(lc)) move='track';
+  else if(/crane|кран/.test(lc)) move='crane';
+  const moveLabel={in:'Наезд (dolly-in)',out:'Отъезд (dolly-out)',track:'Панорама / трекинг',crane:'Кран (crane)',static:'Статичный план'}[move];
+  // --- geometry (top-down) ---
+  const SX=500, SY=160;            // subject (БубOkko)
+  const camY=SY+gap;               // camera below subject on optical axis
+  const wallY=58;
+  const coneLen=camY-wallY+10;
+  const half=(fov/2)*Math.PI/180;
+  const dx=coneLen*Math.tan(half);
+  const lTopX=SX-dx, rTopX=SX+dx;
+  // --- build svg ---
   let h='';
-  SHOTS.forEach((s,i)=>{
-    const cx=seg*i+seg/2,cy=160,camY=320,on=i===active,col=on?'#F5A623':'#5a4a8a',vio=on?'#B58BFF':'#473873';
-    h+=`<g style="cursor:pointer" onclick="select(${i})">
-      <text x="${cx}" y="34" fill="${on?'#F5A623':'#6a6a78'}" font-size="13" text-anchor="middle" font-family="sans-serif">${s.n}</text>
-      <path d="M${cx} ${camY} L${cx-32} ${cy+18} L${cx+32} ${cy+18} Z" fill="${on?'rgba(245,166,35,.16)':'rgba(90,74,138,.1)'}" stroke="${col}" stroke-width="1.4"/>
-      <circle cx="${cx}" cy="${cy}" r="19" fill="${vio}"/>
-      <circle cx="${cx-7}" cy="${cy-3}" r="3" fill="#23E6C1"/><circle cx="${cx}" cy="${cy-5}" r="3.3" fill="#23E6C1"/><circle cx="${cx+7}" cy="${cy-3}" r="3" fill="#23E6C1"/>
-      <rect x="${cx-9}" y="${camY}" width="18" height="12" rx="2" fill="${col}"/>
-      <line x1="${cx}" y1="${cy-21}" x2="${cx}" y2="${cy-38}" stroke="#23E6C1" stroke-width="2"/><circle cx="${cx}" cy="${cy-42}" r="3" fill="#23E6C1"/></g>`;
-  });
+  // backdrop wall
+  h+=`<line x1="150" y1="${wallY}" x2="850" y2="${wallY}" stroke="#3a3a44" stroke-width="3"/>`;
+  h+=`<text x="500" y="${wallY-12}" fill="#8a8a96" font-size="13" text-anchor="middle" font-family="sans-serif" letter-spacing="1">ФОН · кинозал Okko</text>`;
+  for(let x=180;x<=820;x+=40){ h+=`<line x1="${x}" y1="${wallY}" x2="${x-10}" y2="${wallY-9}" stroke="#2c2c34" stroke-width="2"/>`; }
+  // lens cone
+  h+=`<path d="M${SX} ${camY} L${lTopX} ${wallY+6} L${rTopX} ${wallY+6} Z" fill="rgba(245,166,35,.12)" stroke="rgba(245,166,35,.5)" stroke-width="1.3"/>`;
+  // optical axis / eyeline (dashed teal)
+  h+=`<line x1="${SX}" y1="${SY-8}" x2="${SX}" y2="${camY-14}" stroke="#23E6C1" stroke-width="1.6" stroke-dasharray="5 5"/>`;
+  h+=`<text x="${SX+10}" y="${(SY+camY)/2}" fill="#23E6C1" font-size="12" font-family="sans-serif">взгляд в камеру</text>`;
+  // subject Bubokko (eyes face down toward camera)
+  h+=`<circle cx="${SX}" cy="${SY}" r="22" fill="#6A40FF"/>`;
+  h+=`<circle cx="${SX-8}" cy="${SY+6}" r="3.2" fill="#23E6C1"/><circle cx="${SX}" cy="${SY+8}" r="3.6" fill="#23E6C1"/><circle cx="${SX+8}" cy="${SY+6}" r="3.2" fill="#23E6C1"/>`;
+  h+=`<text x="${SX}" y="${SY-30}" fill="#B58BFF" font-size="13" text-anchor="middle" font-family="sans-serif" font-weight="700">БубOkko</text>`;
+  h+=`<text x="${SX+30}" y="${SY+4}" fill="#6a6a78" font-size="11" font-family="sans-serif">≈2.2 м</text>`;
+  // camera icon
+  h+=`<g><rect x="${SX-16}" y="${camY}" width="32" height="20" rx="3" fill="#F5A623"/><rect x="${SX+16}" y="${camY+4}" width="9" height="12" fill="#F5A623"/><circle cx="${SX}" cy="${camY+10}" r="4" fill="#180f00"/></g>`;
+  // movement glyph
+  function arrow(x1,y1,x2,y2){const a=Math.atan2(y2-y1,x2-x1),L=9;return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#F5A623" stroke-width="2.4"/><path d="M${x2} ${y2} L${x2-L*Math.cos(a-0.4)} ${y2-L*Math.sin(a-0.4)} M${x2} ${y2} L${x2-L*Math.cos(a+0.4)} ${y2-L*Math.sin(a+0.4)}" stroke="#F5A623" stroke-width="2.4" fill="none"/>`;}
+  if(move==='in') h+=arrow(SX-40,camY+8,SX-40,SY+40);
+  else if(move==='out') h+=arrow(SX-40,SY+40,SX-40,camY+8);
+  else if(move==='track') h+=arrow(SX-70,camY+10,SX-130,camY+10)+arrow(SX+70,camY+10,SX+130,camY+10);
+  else if(move==='crane'){ h+=`<path d="M${SX-95} ${camY+14} Q ${SX-60} ${camY-40} ${SX-30} ${camY-2}" stroke="#F5A623" stroke-width="2.4" fill="none"/>`+arrow(SX-40,camY-12,SX-30,camY-2);}
+  else h+=`<text x="${SX-40}" y="${camY+15}" fill="#F5A623" font-size="11" text-anchor="end" font-family="sans-serif">🔒</text>`;
+  // camera label block
+  h+=`<text x="${SX}" y="${camY+38}" fill="#fff" font-size="14" text-anchor="middle" font-family="sans-serif" font-weight="700">${s.frame.split('·')[0].trim()} · ${mm}mm</text>`;
+  h+=`<text x="${SX}" y="${camY+56}" fill="#F5A623" font-size="12" text-anchor="middle" font-family="sans-serif">${moveLabel}</text>`;
+  // shot tag top-left
+  h+=`<text x="40" y="40" fill="#ffd27a" font-size="15" font-family="sans-serif" font-weight="800">SHOT ${s.n}</text>`;
+  h+=`<text x="40" y="60" fill="#6a6a78" font-size="12" font-family="sans-serif">${s.tc}</text>`;
   m.innerHTML=h;
 }
 
