@@ -127,7 +127,23 @@ h2{font-size:clamp(25px,3.8vw,46px);line-height:1.12;font-weight:800;letter-spac
     <div class="glow"></div>
     <div class="eyebrow">Как мы это сделали</div>
     <h2>Это сделал <span class="big">мультимедийный агент</span></h2>
-    <p class="lead">Не видеогенератор. <b class="tealc">Управляемый конвейер</b>, который собирает контент по этапам: <b>бриф → раскадровка → одобрение → рендер</b>. Вы видите и утверждаете каждый шаг. А теперь — доказательства.</p>
+    <p class="lead">Не видеогенератор. <b class="tealc">Управляемый конвейер</b>, который собирает контент по этапам. Вот как он работает.</p>
+  </section>
+
+  <!-- 7 PIPELINE (сразу после reveal) -->
+  <section id="s7">
+    <div class="glow"></div>
+    <div class="eyebrow">Как идёт работа</div>
+    <h2>От брифа до готового ролика</h2>
+    <div class="pipe">
+      <div class="step"><div class="no">01</div><b>Бриф</b><p>Текст и бренд-библия — прямо в чат</p></div>
+      <div class="step"><div class="no">02</div><b>Раскадровка</b><p>Этапы видны и редактируемы (Canvas)</p></div>
+      <div class="step hi"><div class="no">03</div><b>⊙ Одобрение</b><p>Ваша точка контроля до рендера</p></div>
+      <div class="step"><div class="no">04</div><b>Рендер</b><p>3D / аватары, бренд-стиль</p></div>
+      <div class="step"><div class="no">05</div><b>Озвучка</b><p>Клон голоса персонажа</p></div>
+      <div class="step"><div class="no">06</div><b>Сборка + QA</b><p>Монтаж и проверка идентичности</p></div>
+    </div>
+    <p class="lead" style="margin-top:24px">Тот же конвейер работает для <span class="accent">любого формата</span> — и его легко повторять серийно. А теперь — доказательства.</p>
   </section>
 
   <!-- 2 RESULT / IDENTITY -->
@@ -178,34 +194,6 @@ h2{font-size:clamp(25px,3.8vw,46px);line-height:1.12;font-weight:800;letter-spac
     </div>
   </section>
 
-  <!-- 6 STAGES = CONTROL (honest) -->
-  <section id="s6">
-    <div class="eyebrow">Честно о подходе</div>
-    <h2>Этапность — это осознанный выбор контроля</h2>
-    <p class="lead">Мы могли бы «жать кнопку и надеяться». Вместо этого собираем по шагам — и отдаём вам руль на каждом.</p>
-    <div class="feat">
-      <div class="fcard"><div class="ic">👁️</div><h3>Прозрачность</h3><p>Видно, что агент делает и на каком шаге. Никаких чёрных ящиков и непонятных списаний.</p></div>
-      <div class="fcard"><div class="ic">✏️</div><h3>Редактируемость</h3><p>Поправить этап можно до того, как он повлияет на финал. Вы у руля, а не постфактум.</p></div>
-      <div class="fcard"><div class="ic">🛡️</div><h3>Предсказуемость</h3><p>Бюджет и сроки под контролем. Качество и бренд-консистентность — тоже.</p></div>
-    </div>
-  </section>
-
-  <!-- 7 PIPELINE -->
-  <section id="s7">
-    <div class="glow"></div>
-    <div class="eyebrow">Как идёт работа</div>
-    <h2>От брифа до готового ролика</h2>
-    <div class="pipe">
-      <div class="step"><div class="no">01</div><b>Бриф</b><p>Текст и бренд-библия — прямо в чат</p></div>
-      <div class="step"><div class="no">02</div><b>Раскадровка</b><p>Этапы видны и редактируемы (Canvas)</p></div>
-      <div class="step hi"><div class="no">03</div><b>⊙ Одобрение</b><p>Ваша точка контроля до рендера</p></div>
-      <div class="step"><div class="no">04</div><b>Рендер</b><p>3D / аватары, бренд-стиль</p></div>
-      <div class="step"><div class="no">05</div><b>Озвучка</b><p>Клон голоса персонажа</p></div>
-      <div class="step"><div class="no">06</div><b>Сборка + QA</b><p>Монтаж и проверка идентичности</p></div>
-    </div>
-    <p class="lead" style="margin-top:24px">Тот же конвейер работает для <span class="accent">любого формата</span> — и его легко повторять серийно.</p>
-  </section>
-
   <!-- 8 WHAT FOR OKKO -->
   <section id="s8">
     <div class="eyebrow">Что агент даёт Okko</div>
@@ -247,7 +235,7 @@ h2{font-size:clamp(25px,3.8vw,46px);line-height:1.12;font-weight:800;letter-spac
 </div>
 
 <script>
-const ids=['s1','s4','s2','s3','s5','s6','s7','s8','s9','s10'];
+const ids=['s1','s4','s7','s2','s3','s5','s8','s9','s10'];
 const dots=document.getElementById('dots');
 ids.forEach((id,i)=>{const a=document.createElement('a');a.href='#'+id;a.title='Слайд '+(i+1);dots.appendChild(a);});
 const deck=document.getElementById('deck');
