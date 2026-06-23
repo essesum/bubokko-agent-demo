@@ -122,10 +122,18 @@ h2{font-size:clamp(25px,3.8vw,46px);line-height:1.12;font-weight:800;letter-spac
     <div class="scrollhint">прокрутите вниз ↓</div>
   </section>
 
+  <!-- 4 REVEAL (сразу после видео) -->
+  <section id="s4" class="reveal">
+    <div class="glow"></div>
+    <div class="eyebrow">Как мы это сделали</div>
+    <h2>Это сделал <span class="big">мультимедийный агент</span></h2>
+    <p class="lead">Не видеогенератор. <b class="tealc">Управляемый конвейер</b>, который собирает контент по этапам: <b>бриф → раскадровка → одобрение → рендер</b>. Вы видите и утверждаете каждый шаг. А теперь — доказательства.</p>
+  </section>
+
   <!-- 2 RESULT / IDENTITY -->
   <section id="s2">
     <div class="glow"></div>
-    <div class="eyebrow">Результат · идентичность сохранена</div>
+    <div class="eyebrow">Доказательство 1 · идентичность сохранена</div>
     <h2>БубOkko не «плывёт» между кадрами</h2>
     <p class="lead">Главная боль ИИ-видео — маскот теряет внешность. Мы зафиксировали канон БубOkko по вашей бренд-библии: <span class="tealc">3 глаза, 3 брови, 4 пальца, фиолетовый мех с бирюзовыми пятнами, розовые уши, голос-клон</span> — одинаково в каждом кадре.</p>
     <div class="facts">
@@ -138,7 +146,7 @@ h2{font-size:clamp(25px,3.8vw,46px);line-height:1.12;font-weight:800;letter-spac
 
   <!-- 3 STORYBOARD -->
   <section id="s3">
-    <div class="eyebrow">Доказательство качества</div>
+    <div class="eyebrow">Доказательство 2 · качество режиссуры</div>
     <h2>Это срежиссировано, а не «сгенерировано наугад»</h2>
     <p class="lead">Каждый кадр продуман: ракурс, оптика, свет, эмоция — по библии БубOkko. Полноценная режиссёрская раскадровка.</p>
     <div class="bento">
@@ -151,14 +159,6 @@ h2{font-size:clamp(25px,3.8vw,46px);line-height:1.12;font-weight:800;letter-spac
       <div class="cell"><img src="assets/frames/fear.jpg" alt="пугает"/><div class="cap"><b>07</b> · нежное рычание</div></div>
       <div class="cell"><img src="assets/frames/sit_cinema.jpg" alt="попкорн"/><div class="cap"><b>08</b> · WS · финал с попкорном</div></div>
     </div>
-  </section>
-
-  <!-- 4 REVEAL -->
-  <section id="s4" class="reveal">
-    <div class="glow"></div>
-    <div class="eyebrow">А теперь — как это устроено</div>
-    <h2>Это сделал <span class="big">мультимедийный агент</span></h2>
-    <p class="lead">Не видеогенератор. <b class="tealc">Управляемый конвейер</b>, который собирает контент по этапам: <b>бриф → раскадровка → одобрение → рендер</b>. Вы видите и утверждаете каждый шаг.</p>
   </section>
 
   <!-- 5 MOAT -->
@@ -252,7 +252,7 @@ h2{font-size:clamp(25px,3.8vw,46px);line-height:1.12;font-weight:800;letter-spac
 </div>
 
 <script>
-const ids=['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10'];
+const ids=['s1','s4','s2','s3','s5','s6','s7','s8','s9','s10'];
 const dots=document.getElementById('dots');
 ids.forEach((id,i)=>{const a=document.createElement('a');a.href='#'+id;a.title='Слайд '+(i+1);dots.appendChild(a);});
 const deck=document.getElementById('deck');
