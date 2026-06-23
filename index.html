@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>БубOkko — видео под ключ нашим ИИ-агентом</title>
+<meta name="description" content="Бренд-персонаж БубOkko: готовый ролик от сценария до видео, созданный нашим видео-агентом с встроенным режиссёрским подходом."/>
+<style>
+:root{
+  --bg:#08080A; --panel:#111114; --panel2:#17171c; --line:#26262e;
+  --amber:#F5A623; --gold:#ffd27a; --txt:#ECECF1; --mut:#9a9aa6;
+  --okko:#26008A; --vio:#6A40FF; --vio3:#B58BFF; --teal:#23E6C1; --pink:#FF9BD0; --soft:#EDE7FF;
+  --font:'Segoe UI',Inter,system-ui,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--font);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.deck{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.deck::-webkit-scrollbar{display:none}
+section{min-height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:74px 6vw;position:relative;text-align:center}
+.eyebrow{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:18px}
+h1{font-size:clamp(34px,6vw,72px);line-height:1.05;font-weight:800;letter-spacing:-1px}
+h2{font-size:clamp(26px,4vw,48px);line-height:1.1;font-weight:800;letter-spacing:-.5px}
+.lead{color:var(--mut);font-size:clamp(15px,1.6vw,20px);max-width:760px;margin:18px auto 0}
+.accent{color:var(--vio3)} .tealc{color:var(--teal)} .amberc{color:var(--amber)}
+.bubokko-o{display:inline-grid;grid-auto-flow:column;gap:2px;vertical-align:middle}
+.btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:32px}
+.btn{cursor:pointer;text-decoration:none;border:1px solid var(--line);background:var(--panel2);color:var(--txt);padding:14px 26px;border-radius:13px;font-size:15px;font-weight:600;transition:.18s}
+.btn:hover{border-color:var(--amber);color:var(--gold);transform:translateY(-2px)}
+.btn.primary{background:linear-gradient(135deg,var(--amber),#e0860f);color:#180f00;border:none}
+.btn.primary:hover{box-shadow:0 10px 30px rgba(245,166,35,.35)}
+
+/* glow bg */
+.glow{position:absolute;inset:0;overflow:hidden;z-index:-1}
+.glow::before{content:"";position:absolute;width:60vw;height:60vw;border-radius:50%;background:radial-gradient(circle,rgba(106,64,255,.32),transparent 65%);top:-20vw;right:-10vw}
+.glow::after{content:"";position:absolute;width:46vw;height:46vw;border-radius:50%;background:radial-gradient(circle,rgba(35,230,193,.16),transparent 65%);bottom:-16vw;left:-8vw}
+
+/* video */
+.videowrap{margin-top:30px;width:min(880px,92vw);border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 90px rgba(106,64,255,.3);background:#000}
+.videowrap video{width:100%;display:block}
+.facts{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:26px}
+.fact{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px 18px;min-width:120px}
+.fact b{display:block;font-size:22px;color:var(--gold)}
+.fact span{font-size:12px;color:var(--mut)}
+
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:min(1100px,94vw);margin-top:30px}
+.cell{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:radial-gradient(120% 120% at 50% 18%,#2a1a52,#0b0716);aspect-ratio:1}
+.cell.wide{grid-column:span 2;aspect-ratio:2}
+.cell img{width:100%;height:100%;object-fit:contain;display:block}
+.cell .cap{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;font-size:11px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.85));text-align:left}
+.cell .cap b{color:var(--gold)}
+
+/* reveal */
+.reveal h2 .big{display:block;font-size:clamp(40px,8vw,96px);background:linear-gradient(135deg,var(--vio3),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:8px}
+
+/* feature grid */
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:min(1080px,94vw);margin-top:34px;text-align:left}
+.fcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;transition:.18s}
+.fcard:hover{border-color:var(--vio);transform:translateY(-4px)}
+.fcard .ic{font-size:26px;margin-bottom:10px}
+.fcard h3{font-size:17px;margin-bottom:6px}
+.fcard p{font-size:13.5px;color:var(--mut)}
+
+/* pipeline */
+.pipe{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:stretch;width:min(1150px,96vw);margin-top:34px}
+.step{flex:1;min-width:120px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 12px;position:relative}
+.step .no{font-size:11px;color:var(--amber);letter-spacing:1px}
+.step b{display:block;font-size:14px;margin:6px 0 4px}
+.step p{font-size:11.5px;color:var(--mut)}
+.step:not(:last-child)::after{content:"→";position:absolute;right:-13px;top:50%;transform:translateY(-50%);color:var(--vio3);font-size:18px;z-index:2}
+
+/* proof */
+.proof{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:min(1080px,94vw);margin-top:30px;text-align:left}
+.pbox{background:#0a0a0d;border:1px solid var(--line);border-radius:16px;padding:18px}
+.pbox.pos{border-color:#2c5e4f}.pbox.neg{border-color:#5e2c2c}
+.pbox h4{font-size:13px;margin-bottom:10px}.pbox.pos h4{color:var(--teal)}.pbox.neg h4{color:#ff9b9b}
+.code{font-family:ui-monospace,Menlo,monospace;font-size:11px;line-height:1.6;color:#cfeee5;white-space:pre-wrap}
+.pbox.neg .code{color:#ffc4c4}
+
+/* nav dots */
+.dots{position:fixed;right:22px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:50}
+.dots a{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--mut);transition:.18s;display:block}
+.dots a.active{background:var(--amber);border-color:var(--amber);transform:scale(1.25)}
+.topbar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:16px 28px;z-index:50;background:linear-gradient(rgba(8,8,10,.7),transparent)}
+.topbar .lg{display:flex;align-items:center;gap:10px;font-weight:700}
+.topbar .lg .m{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--okko),var(--vio));display:grid;place-items:center}
+.scrollhint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:var(--mut);font-size:12px;letter-spacing:1px;animation:bob 1.8s infinite}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,7px)}}
+.foot{font-size:12px;color:var(--mut);margin-top:30px}
+@media(max-width:820px){.bento{grid-template-columns:repeat(2,1fr)}.feat,.proof{grid-template-columns:1fr}.step::after{display:none}.dots{display:none}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="lg"><div class="m"><svg width="22" height="22" viewBox="0 0 100 100"><circle cx="30" cy="50" r="14" fill="#EDE7FF"/><circle cx="50" cy="46" r="15" fill="#EDE7FF"/><circle cx="70" cy="50" r="14" fill="#EDE7FF"/><circle cx="30" cy="50" r="6" fill="#23E6C1"/><circle cx="50" cy="46" r="6.5" fill="#23E6C1"/><circle cx="70" cy="50" r="6" fill="#23E6C1"/></svg></div>БубOkko</div>
+  <a class="btn" href="workbook.html" style="padding:9px 16px;font-size:13px">Режиссёрский воркбук →</a>
+</div>
+
+<nav class="dots" id="dots"></nav>
+
+<div class="deck" id="deck">
+
+  <!-- 1 HERO + RESULT -->
+  <section id="s1">
+    <div class="glow"></div>
+    <div class="eyebrow">Бренд-персонаж · готовый ролик</div>
+    <h1>Знакомьтесь — <span class="accent">БубOkko</span></h1>
+    <p class="lead">Ролик под ключ: от сценария и режиссёрского разбора до финального видео с фирменным голосом. Создан <b class="tealc">нашим ИИ-агентом</b>.</p>
+    <div class="videowrap">
+      <video src="assets/bubokko_result.mp4" controls autoplay muted loop playsinline poster="assets/frames/hero.jpg"></video>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>0:19</b><span>хронометраж</span></div>
+      <div class="fact"><b>3D</b><span>Pixar-уровень</span></div>
+      <div class="fact"><b>Клон</b><span>голос персонажа</span></div>
+      <div class="fact"><b>100%</b><span>идентичность сохранена</span></div>
+    </div>
+    <div class="scrollhint">прокрутите вниз ↓</div>
+  </section>
+
+  <!-- 2 IDENTITY -->
+  <section id="s2">
+    <div class="glow"></div>
+    <div class="eyebrow">Зачем это важно</div>
+    <h2>Персонаж не «плывёт» между кадрами</h2>
+    <p class="lead">Главная боль ИИ-видео — герой теряет внешность. Мы зафиксировали канон БубOkko: <span class="tealc">3 глаза, 3 брови, 4 пальца, фиолетовый мех с бирюзовыми пятнами, розовые уши</span> — и он одинаковый в каждом кадре.</p>
+    <div class="facts">
+      <div class="fact"><b>3 / 3</b><span>глаза / брови</span></div>
+      <div class="fact"><b>4</b><span>пальца на лапе</span></div>
+      <div class="fact"><b>#6A40FF</b><span>фирменный цвет</span></div>
+      <div class="fact"><b>8</b><span>кадров в ролике</span></div>
+    </div>
+  </section>
+
+  <!-- 3 STORYBOARD -->
+  <section id="s3">
+    <div class="eyebrow">Доказательство качества</div>
+    <h2>Режиссёрская раскадровка</h2>
+    <p class="lead">Каждый кадр продуман: ракурс, оптика, свет, эмоция. Это не случайная генерация — это срежиссированный ролик.</p>
+    <div class="bento">
+      <div class="cell wide"><img src="assets/frames/hero.jpg" alt="БубOkko приветствие"/><div class="cap"><b>01</b> · WS · появление из портала</div></div>
+      <div class="cell"><img src="assets/frames/joy.jpg" alt="радость"/><div class="cap"><b>02</b> · MS · к камере</div></div>
+      <div class="cell"><img src="assets/frames/approve.jpg" alt="жест"/><div class="cap"><b>03</b> · жест «забубокко»</div></div>
+      <div class="cell"><img src="assets/frames/mischief.jpg" alt="озорство"/><div class="cap"><b>04</b> · CU · мимика</div></div>
+      <div class="cell"><img src="assets/frames/face.jpg" alt="три глаза"/><div class="cap"><b>05</b> · ECU · 3 глаза</div></div>
+      <div class="cell"><img src="assets/frames/paw.jpg" alt="лапа"/><div class="cap"><b>06</b> · macro · шерсть</div></div>
+      <div class="cell"><img src="assets/frames/fear.jpg" alt="пугает"/><div class="cap"><b>07</b> · нежное рычание</div></div>
+      <div class="cell"><img src="assets/frames/sit_cinema.jpg" alt="попкорн"/><div class="cap"><b>08</b> · WS · финал</div></div>
+    </div>
+  </section>
+
+  <!-- 4 REVEAL -->
+  <section id="s4" class="reveal">
+    <div class="glow"></div>
+    <div class="eyebrow">А теперь — главное</div>
+    <h2>Всё это сделал <span class="big">видео-агент</span></h2>
+    <p class="lead">Не студия из 10 человек и не недели работы. Вы дали текст и персонажа — <b class="tealc">агент сам отрежиссировал, сгенерировал и озвучил ролик</b>. Внутри него — наш авторский режиссёрский подход.</p>
+  </section>
+
+  <!-- 5 DIRECTOR APPROACH -->
+  <section id="s5">
+    <div class="eyebrow">Что внутри агента</div>
+    <h2>Режиссёрский подход, а не «промпт наугад»</h2>
+    <div class="feat">
+      <div class="fcard"><div class="ic">🎬</div><h3>Rule of Six</h3><p>Кадры строятся по принципу Уолтера Мёрча: эмоция → история → ритм → фокус → композиция.</p></div>
+      <div class="fcard"><div class="ic">🔒</div><h3>Character Lock</h3><p>Канон персонажа зашит в каждый промпт + negative-prompt. Облик стабилен от кадра к кадру.</p></div>
+      <div class="fcard"><div class="ic">🎞️</div><h3>Покадровый план</h3><p>Таймкоды, ракурсы, оптика, движение камеры, свет — полноценный shot list, как на съёмке.</p></div>
+      <div class="fcard"><div class="ic">⚙️</div><h3>Промпт-движок</h3><p>Готовые промпты под Seedance 2.0 и Kling + JSON-payload для тех-команды.</p></div>
+      <div class="fcard"><div class="ic">🎙️</div><h3>Клон голоса</h3><p>Озвучка фирменным голосом персонажа через клонирование (ElevenLabs / HeyGen).</p></div>
+      <div class="fcard"><div class="ic">✅</div><h3>QA-гейт</h3><p>Каждый кадр проходит чек-лист: анатомия, цвет, мимика, стабильность меха — до сдачи клиенту.</p></div>
+    </div>
+  </section>
+
+  <!-- 6 PIPELINE -->
+  <section id="s6">
+    <div class="glow"></div>
+    <div class="eyebrow">Как работает агент</div>
+    <h2>От текста до готового видео</h2>
+    <div class="pipe">
+      <div class="step"><div class="no">01</div><b>Сценарий</b><p>Ваш текст и бренд-бук</p></div>
+      <div class="step"><div class="no">02</div><b>Режиссура</b><p>Разбор по битам, Rule of Six</p></div>
+      <div class="step"><div class="no">03</div><b>Character Lock</b><p>Фиксация канона героя</p></div>
+      <div class="step"><div class="no">04</div><b>Промпты</b><p>Seedance / Kling</p></div>
+      <div class="step"><div class="no">05</div><b>Озвучка</b><p>Клон голоса</p></div>
+      <div class="step"><div class="no">06</div><b>Сборка + QA</b><p>Монтаж и проверка</p></div>
+    </div>
+    <p class="lead" style="margin-top:26px">Один и тот же конвейер работает для <span class="accent">любого бренд-персонажа</span> — БубOkko здесь как пример.</p>
+  </section>
+
+  <!-- 7 PROOF -->
+  <section id="s7">
+    <div class="eyebrow">Под капотом</div>
+    <h2>Доказательная база</h2>
+    <p class="lead">Это инженерия, а не магия. Вот фрагмент того, что агент держит под контролем для консистентности.</p>
+    <div class="proof">
+      <div class="pbox pos"><h4>✓ Character Lock (positive)</h4><div class="code">BubOkko, a large fluffy purple-blue monster mascot, three big eyes in a horizontal row, three expressive eyebrows, ears with pink inner fur, soft paws with four fingers, teal-green fur patches, Pixar/DreamWorks quality.</div></div>
+      <div class="pbox neg"><h4>✕ Negative Lock</h4><div class="code">two eyes, one eye, four eyes, missing third eye, missing eyebrows, horns, claws, fangs, scary horror monster, robot, human in costume, deformed body, no teal patches, flat fur, watermark.</div></div>
+    </div>
+    <a class="btn" href="workbook.html" style="margin-top:24px">Открыть полный режиссёрский воркбук →</a>
+  </section>
+
+  <!-- 8 CTA -->
+  <section id="s8">
+    <div class="glow"></div>
+    <div class="eyebrow">Готовы повторить для вашего бренда?</div>
+    <h2>Запустим <span class="accent">вашего персонажа</span> в видео</h2>
+    <p class="lead">Дайте героя и текст — получите срежиссированный ролик с сохранённой идентичностью. Быстро, консистентно, в фирменном стиле.</p>
+    <div class="btns">
+      <a class="btn primary" href="mailto:ekaterinasumm@gmail.com?subject=Хочу видео-агента для моего бренда">Обсудить проект</a>
+      <a class="btn" href="workbook.html">Посмотреть кейс детально</a>
+    </div>
+    <div class="foot">Кейс БубOkko · ролик создан ИИ-видео-агентом с авторским режиссёрским подходом</div>
+  </section>
+
+</div>
+
+<script>
+const ids=['s1','s2','s3','s4','s5','s6','s7','s8'];
+const dots=document.getElementById('dots');
+ids.forEach((id,i)=>{const a=document.createElement('a');a.href='#'+id;a.title='Слайд '+(i+1);dots.appendChild(a);});
+const deck=document.getElementById('deck');
+const secs=ids.map(id=>document.getElementById(id));
+const dotEls=[...dots.children];
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const i=ids.indexOf(e.target.id);dotEls.forEach((d,j)=>d.classList.toggle('active',j===i));}});},{root:deck,threshold:.6});
+secs.forEach(s=>io.observe(s));
+// keyboard nav
+let idx=0;
+function go(n){idx=Math.max(0,Math.min(ids.length-1,n));secs[idx].scrollIntoView({behavior:'smooth'});}
+document.addEventListener('keydown',e=>{
+  if(['ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(idx+1);}
+  if(['ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(idx-1);}
+});
+deck.addEventListener('scroll',()=>{const i=Math.round(deck.scrollTop/window.innerHeight);if(i!==idx)idx=i;},{passive:true});
+</script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>БубOkko — Director's Treatment & Production Pack</title>
+<style>
+:root{
+  --bg:#08080A; --panel:#111114; --panel2:#17171c; --line:#26262e;
+  --amber:#F5A623; --gold:#ffd27a; --txt:#ECECF1; --mut:#9a9aa6;
+  --okko:#26008A; --vio:#6A40FF; --vio3:#B58BFF; --teal:#23E6C1; --pink:#FF9BD0; --soft:#EDE7FF;
+  --font:'Segoe UI',Inter,system-ui,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(1300px 760px at 82% -12%,#1c0f3e 0%,var(--bg) 55%);color:var(--txt);font-family:var(--font);font-size:15px;line-height:1.55}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 28px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,8,10,.85);backdrop-filter:blur(12px);z-index:40}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,var(--okko),var(--vio));display:grid;place-items:center;box-shadow:0 0 28px rgba(106,64,255,.6)}
+h1{font-size:19px;margin:0;letter-spacing:.2px}
+.sub{color:var(--mut);font-size:12px;margin-top:2px}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+button{cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--txt);padding:9px 14px;border-radius:10px;font-size:13px;transition:.15s}
+button:hover{border-color:var(--amber);color:var(--gold)}
+button.primary{background:linear-gradient(135deg,var(--amber),#e0860f);color:#180f00;border:none;font-weight:700}
+.wrap{padding:26px 28px;max-width:1520px;margin:0 auto}
+
+.hero{display:grid;grid-template-columns:1.4fr 1fr;gap:22px;align-items:center;background:linear-gradient(135deg,#150a2e,#0c0712);border:1px solid var(--line);border-radius:22px;padding:30px;margin-bottom:8px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(106,64,255,.35),transparent 70%)}
+.hero h2{font-size:30px;margin:0 0 6px;line-height:1.15}
+.hero .lead{color:var(--mut);font-size:15px;max-width:640px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.kpi{background:#0c0c10;border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:92px}
+.kpi b{display:block;font-size:20px;color:var(--gold)}
+.kpi span{font-size:11px;color:var(--mut)}
+.heroimg{aspect-ratio:1;border-radius:18px;background:radial-gradient(120% 120% at 50% 25%,#3a2168,#0c0716);display:grid;place-items:center;border:1px solid var(--line)}
+.heroimg img{width:86%;height:86%;object-fit:contain}
+
+.sec-title{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin:34px 0 14px;display:flex;align-items:center;gap:12px}
+.sec-title::after{content:"";flex:1;height:1px;background:var(--line)}
+.sec-title small{color:var(--mut);letter-spacing:.4px;text-transform:none;font-size:11px}
+
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.vcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+.vcard h4{margin:0 0 6px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--vio3)}
+.vcard p{margin:0;font-size:13.5px;color:#d6d6df}
+.palette{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
+.sw{flex:1;min-width:120px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+.sw .chip{height:64px}
+.sw .lab{padding:9px 11px;font-size:11px}
+.sw .lab b{display:block;font-size:12px;color:#fff}
+.sw .lab span{color:var(--mut)}
+
+.lock{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.lockbox{background:#0a0a0d;border:1px solid var(--line);border-radius:16px;padding:16px}
+.lockbox.pos{border-color:#2c5e4f} .lockbox.neg{border-color:#5e2c2c}
+.lockbox h4{margin:0 0 10px;font-size:13px;display:flex;align-items:center;gap:8px}
+.lockbox.pos h4{color:var(--teal)} .lockbox.neg h4{color:#ff9b9b}
+.code{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;line-height:1.6;white-space:pre-wrap;color:#cfeee5}
+.lockbox.neg .code{color:#ffc4c4}
+.copy{float:right;font-size:11px;padding:4px 9px}
+
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;transition:.2s}
+.card:hover{transform:translateY(-4px);border-color:var(--vio);box-shadow:0 16px 44px rgba(106,64,255,.28)}
+.card.big{grid-column:span 2;grid-row:span 2}
+.frame{aspect-ratio:16/9;width:100%;display:grid;place-items:center;background:radial-gradient(120% 120% at 50% 18%,#2a1a52,#0b0716)}
+.card.big .frame{aspect-ratio:16/11}
+.frame img{width:100%;height:100%;object-fit:contain;display:block}
+.tc{position:absolute;top:10px;left:10px;font-size:11px;font-weight:700;letter-spacing:.5px;padding:4px 9px;border-radius:8px;background:rgba(0,0,0,.6);border:1px solid var(--line);color:var(--gold)}
+.num{position:absolute;top:10px;right:10px;font-size:10px;background:var(--vio3);color:#150a33;padding:3px 9px;border-radius:20px;font-weight:800}
+.meta{position:absolute;left:0;right:0;bottom:0;padding:11px 12px;background:linear-gradient(transparent,rgba(0,0,0,.9))}
+.meta b{color:#fff;font-size:12px}
+.meta .row{color:var(--mut);margin-top:4px;display:flex;gap:6px;flex-wrap:wrap}
+.tagx{background:rgba(255,255,255,.07);border:1px solid var(--line);padding:1px 7px;border-radius:6px;font-size:10px}
+
+.dual{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pane{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.pane h3{margin:0 0 12px;font-size:14px;color:var(--gold)}
+.beat{padding:11px 13px;border-radius:11px;border:1px solid transparent;cursor:pointer;margin-bottom:8px;transition:.15s;background:var(--panel2)}
+.beat:hover{border-color:var(--vio)}
+.beat.active{border-color:var(--amber);background:#1d1606}
+.beat .bn{font-size:10px;color:var(--amber);letter-spacing:1px;display:flex;justify-content:space-between}
+.beat p{margin:5px 0 0;font-size:14px}
+.detail img.ref{width:100%;max-height:240px;object-fit:contain;background:radial-gradient(120% 120% at 50% 20%,#2a1a52,#0c0716);border:1px solid var(--line);border-radius:12px;margin-bottom:12px}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:6px 12px;font-size:13px;margin-bottom:6px}
+.kv span{color:var(--mut)}
+.prompt{margin-top:12px;background:#08080a;border:1px solid var(--line);border-radius:10px;padding:12px;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#bfe9dd;white-space:pre-wrap;line-height:1.55}
+.note{width:100%;margin-top:10px;background:#08080a;border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px;font-family:var(--font);font-size:13px;resize:vertical;min-height:60px}
+
+.map{aspect-ratio:16/6.6;width:100%;background:repeating-linear-gradient(0deg,#0c0c0f,#0c0c0f 23px,#121218 24px),repeating-linear-gradient(90deg,#0c0c0f,#0c0c0f 23px,#121218 24px);border:1px solid var(--line);border-radius:14px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--mut);font-size:12px;margin-top:10px}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
+
+.api{background:#0a0a0d;border:1px solid var(--line);border-radius:16px;padding:16px;position:relative}
+.api pre{margin:0;overflow:auto;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;line-height:1.55;color:#cfd8ff;max-height:430px}
+
+.qa{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.qi{display:flex;gap:11px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px;cursor:pointer;transition:.15s}
+.qi:hover{border-color:var(--vio)}
+.qi.done{border-color:#39d98a;background:#0e1a14}
+.qbox{width:20px;height:20px;border-radius:6px;border:2px solid var(--mut);flex:0 0 auto;display:grid;place-items:center;font-size:12px;color:#0c0c10}
+.qi.done .qbox{background:#39d98a;border-color:#39d98a}
+.qi b{font-size:13px} .qi p{margin:3px 0 0;font-size:12px;color:var(--mut)}
+
+.voice{background:linear-gradient(135deg,#15101f,#0e0e12);border:1px solid var(--vio);border-radius:16px;padding:18px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}
+.voice .ic{width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,var(--teal),#13b39a);display:grid;place-items:center;color:#04130f;font-size:26px}
+.voice input{width:100%;background:#08080a;border:1px solid var(--line);color:var(--txt);padding:11px;border-radius:10px;font-size:13px}
+.vstat{font-size:12px;margin-top:6px;color:var(--mut)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#e0a400;margin-right:6px}
+.dot.ok{background:#39d98a}
+.foot{color:var(--mut);font-size:12px;text-align:center;padding:34px 0 14px;line-height:1.7}
+@media(max-width:1000px){.bento,.grid4,.qa{grid-template-columns:repeat(2,1fr)}.dual,.lock,.hero{grid-template-columns:1fr}.card.big{grid-column:span 2}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo"><svg width="30" height="30" viewBox="0 0 100 100"><circle cx="30" cy="50" r="14" fill="#EDE7FF"/><circle cx="50" cy="46" r="15" fill="#EDE7FF"/><circle cx="70" cy="50" r="14" fill="#EDE7FF"/><circle cx="30" cy="50" r="6" fill="#23E6C1"/><circle cx="50" cy="46" r="6.5" fill="#23E6C1"/><circle cx="70" cy="50" r="6" fill="#23E6C1"/></svg></div>
+    <div><h1>БубOkko — Director's Treatment &amp; Production Pack</h1><div class="sub">Бренд-ролик · детский профиль Okko · Seedance 2.0 / Kling · 30 сек · 8 кадров</div></div>
+  </div>
+  <div class="controls">
+    <button id="play">▶ Автопросмотр</button>
+    <button onclick="exportMD()">⤓ Shot List (MD)</button>
+    <button onclick="exportCSV()">⤓ CSV</button>
+    <button class="primary" onclick="loc('voice')">🎙 Голос</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div>
+      <h2>Режиссёрский план бренд-ролика «БубOkko»</h2>
+      <div class="lead">Документ для защиты концепции перед клиентом: связывает монолог БубOkko с визуальными образами, объектами на сцене, движением камеры, светом и готовыми промптами для ИИ-генерации видео (Seedance 2.0 и Kling). Идентичность зафиксирована Character Lock — облик не «плывёт» между кадрами.</div>
+      <div class="kpis">
+        <div class="kpi"><b>0:30</b><span>хронометраж</span></div>
+        <div class="kpi"><b>8</b><span>кадров</span></div>
+        <div class="kpi"><b>3D</b><span>Pixar/DreamWorks</span></div>
+        <div class="kpi"><b>2</b><span>движка ИИ</span></div>
+        <div class="kpi"><b>16:9·9:16</b><span>форматы</span></div>
+      </div>
+    </div>
+    <div class="heroimg"><img src="assets/frames/hero.jpg" alt="БубOkko"/></div>
+  </div>
+
+  <div class="sec-title">Режиссёрское видение <small>Art direction</small></div>
+  <div class="grid4">
+    <div class="vcard"><h4>Жанр</h4><p>Премиальная 3D-анимация уровня Pixar / DreamWorks.</p></div>
+    <div class="vcard"><h4>Визуальный стиль</h4><p>Семейный, сказочный, с мягким неоновым свечением.</p></div>
+    <div class="vcard"><h4>Цвет</h4><p>Фирменная палитра Okko: глубокий фиолетовый, сине-фиолетовый, неоновый бирюзовый, мягкий розовый.</p></div>
+    <div class="vcard"><h4>Свет</h4><p>Мягкий рисующий студийный свет + бирюзовый и лиловый rim-light по краям меха — объём и мягкость.</p></div>
+  </div>
+  <div class="palette" style="margin-top:14px">
+    <div class="sw"><div class="chip" style="background:#26008A"></div><div class="lab"><b>#26008A</b><span>глубокий фиолетовый Okko</span></div></div>
+    <div class="sw"><div class="chip" style="background:#6A40FF"></div><div class="lab"><b>#6A40FF</b><span>сине-фиолетовый (мех)</span></div></div>
+    <div class="sw"><div class="chip" style="background:#23E6C1"></div><div class="lab"><b>#23E6C1</b><span>бирюзовый (глаза/пятна)</span></div></div>
+    <div class="sw"><div class="chip" style="background:#FF9BD0"></div><div class="lab"><b>#FF9BD0</b><span>розовый (уши)</span></div></div>
+    <div class="sw"><div class="chip" style="background:#EDE7FF"></div><div class="lab"><b>#EDE7FF</b><span>лавандовый (живот/блики)</span></div></div>
+  </div>
+
+  <div class="sec-title">🔒 Канонический Character Lock <small>консистенция во всех генерациях</small></div>
+  <div class="lock">
+    <div class="lockbox pos"><h4>✓ Положительный Lock <button class="copy" onclick="cp(POS,this)">copy</button></h4><div class="code" id="posc"></div></div>
+    <div class="lockbox neg"><h4>✕ Отрицательный (Negative) Lock <button class="copy" onclick="cp(NEG,this)">copy</button></h4><div class="code" id="negc"></div></div>
+  </div>
+
+  <div class="sec-title">Покадровая раскадровка <small>реальные рендеры из Библии · клик — детали</small></div>
+  <div class="bento" id="bento"></div>
+
+  <div class="sec-title">Сценарий и стейджинг <small>монолог по кадрам</small></div>
+  <div class="dual">
+    <div class="pane"><h3>Монолог по кадрам</h3><div id="beats"></div></div>
+    <div class="pane detail"><h3 id="dTitle">Выбери кадр</h3><div id="detail"></div></div>
+  </div>
+
+  <div class="sec-title">Карта мизансцены <small>камера + вектор взгляда</small></div>
+  <svg class="map" id="map" viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid meet"></svg>
+  <div class="legend">
+    <span><i style="background:var(--vio3)"></i>БубOkko</span>
+    <span><i style="background:var(--amber)"></i>Камера + конус движения</span>
+    <span><i style="background:var(--teal)"></i>Направление взгляда</span>
+  </div>
+
+  <div class="sec-title">API-Payload Pack <small>Kling / Seedance 2.0 — пример для тех-команды (Кадр 01)</small></div>
+  <div class="api"><button class="copy" style="position:absolute;top:14px;right:14px" onclick="cp(PAYLOAD,this)">copy JSON</button><pre id="payload"></pre></div>
+
+  <div class="sec-title">Чек-лист сдачи клиенту <small>Quality Assurance Gate</small></div>
+  <div class="qa" id="qa"></div>
+
+  <div class="sec-title">Клонирование голоса <small>озвучка во всех кадрах</small></div>
+  <div class="voice" id="voice">
+    <div class="ic">🎙</div>
+    <div>
+      <div style="font-weight:600;margin-bottom:6px">Голос БубOkko — мягкий обволакивающий бас, тянет гласные, шутит (эталон: Бубокко_голос.mov)</div>
+      <input id="vid" placeholder="Вставь Voice ID (ElevenLabs / HeyGen)"/>
+      <div class="vstat"><span class="dot" id="vdot"></span><span id="vmsg">Voice ID ещё не назначен</span></div>
+    </div>
+    <button class="primary" onclick="assignVoice()">Назначить голос</button>
+  </div>
+
+  <div class="foot">
+    Идентичность зафиксирована по «БубOkko_Библия»: 3 глаза · 3 брови · 4 пальца · фиолетово-синий мех с бирюзовыми светящимися пятнами · лавандовый живот · розовые уши · жест «забубокко».<br/>
+    Character Lock и Negative Lock неизменны во всех кадрах. Заметки режиссёра и чек-лист сохраняются локально в браузере.
+  </div>
+</div>
+
+<script>
+const POS = `BubOkko, a large fluffy purple-blue monster mascot, round pear-shaped body, long realistic fur, three big eyes in a horizontal row, three expressive eyebrows, small cat-like ears with pink inner fur, big soft paws with four fingers, short legs, long fluffy tail, light lavender belly fur, teal-green fur patches on shoulders and sides, wide warm smile with rounded white teeth, playful kind expression, cinematic 3D animation, Pixar/DreamWorks quality.`;
+const NEG = `wrong character, two eyes, one eye, four eyes, extra eyes, missing third eye, missing eyebrows, extra eyebrows, no ears, horns, claws, sharp fangs, scary horror monster, blood, gore, spider, insect, robot, human in mascot costume, cheap costume, animatronic, creepy, deformed body, bad anatomy, extra arms, extra legs, no cyan-green patches, no lavender belly, flat fur, watermark, bad brand spelling`;
+const LOCK = "[Character Lock]";
+
+const SHOTS=[
+ {n:"01",tc:"0:00–0:04",img:"hero",big:true,frame:"WS · Establishing",mov:"Спуск крана + наезд (Dolly-In)",lens:"24mm Anamorphic, глубокий фокус",
+  dlg:"О! Ну, о себе я могу рассказывать долго!",
+  obj:"Фиолетовая портальная вспышка, светящиеся постеры Okko, кинозал.",
+  light:"Вспышка фиолетового света с бирюзовыми искрами. БубOkko выныривает из постера.",
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, popping out of a glowing purple Okko portal inside a cozy dark cinema interior, waves proudly. Volumetric light, purple energy flash, soft rim light, smooth dolly-in, family-friendly --ar 16:9`},
+ {n:"02",tc:"0:04–0:08",img:"joy",frame:"MS · Eye-level",mov:"Статичный план",lens:"50mm Prime, f/2.2",
+  dlg:"По легенде, я появился после бубической вспышки, которая произошла среди рыцарей IT. Пусть история и остаётся такой красивой.",
+  obj:"Размытый кинозал, БубOkko.",
+  light:"Мягкий ключевой свет слева, бирюзовый rim-light по краю шерсти. Доверительный взгляд в камеру.",
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, talking warmly straight to camera, friendly smile, eyebrows raised, inside a blurred cinema theater background, soft studio key light with violet fill and teal rim, realistic fur simulation --ar 16:9`},
+ {n:"03",tc:"0:08–0:11",img:"approve",frame:"MS · Поясной",mov:"Лёгкий наезд",lens:"50mm Prime",
+  dlg:"А моё предназначение — быть настоящим брэнд-персонажем и проводником по детскому профилю Okko.",
+  obj:"Фирменная лапа с жестом «забубокко», фиолетовый фон.",
+  light:"Равномерный фиолетовый градиент. БубOkko крупно показывает жест одобрения лапой.",
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, performing the signature 'zabubokko' hand sign (thumb and index forming a circle, other three fingers splayed), smiling proudly, four fingers visible, soft studio key, purple gradient background --ar 16:9`},
+ {n:"04",tc:"0:11–0:14",img:"mischief",frame:"CU · Крупный",mov:"Лёгкий наезд",lens:"50mm, f/2.0",
+  dlg:"Давай называть роскошь своими именами. Пожалуйста.",
+  obj:"БубOkko (крупно лицо), пушистые ушки.",
+  light:"Акцент на мимику. Брови взлетают вверх, розовая внутренняя часть ушей слегка подёргивается.",
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, close-up, mischievous friendly smile, expressive eyebrows raising, cat-like ears with pink inner fur twitching playfully, warm cinema lighting, shallow depth of field --ar 16:9`},
+ {n:"05",tc:"0:14–0:18",img:"face",big:true,frame:"ECU · Hero identity",mov:"Сверхкрупный, лёгкий наезд",lens:"85mm Prime, f/1.8",
+  dlg:"И три глаз, и три брови, и моя великолепная шерсть. Это всё вместе моя визитная карточка...",
+  obj:"Три глаза, три брови (сверхкрупно), пушистый лоб.",
+  light:"Глаза влажные с яркими бликами. Брови двигаются по очереди («танцуют»).",
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, extreme close-up of face, three large oval turquoise eyes with wet catchlights, three shaggy eyebrows waving in a playful dance, warm top light, detailed fur texture --ar 16:9`},
+ {n:"06",tc:"0:18–0:21",img:"paw",frame:"Macro CU",mov:"Горизонтальное панорамирование вдоль лапы",lens:"Macro",
+  dlg:"...и суперспособность, чтобы лучше видеть самые крутые мультики.",
+  obj:"Мех БубOkko, мягкая лапа, бирюзовые неоновые пятна.",
+  light:"Бирюзовые пятна на плечах плавно пульсируют светом. Лапка гладит переливающийся мех.",
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, close-up of lilac paw gently stroking its own glowing purple fur, teal-green patches on shoulders pulse with soft neon light, strong teal rim light, tactile fur detail --ar 16:9`},
+ {n:"07",tc:"0:21–0:26",img:"fear",frame:"MCU · Нижний ракурс",mov:"Наезд (Dolly-Push)",lens:"50mm Prime",
+  dlg:"Не заставляй меня бубуянить. Я живу в детском профиле ОККО, и тут нет плохих фильмов. Так что дипломатия не нужна.",
+  obj:"БубOkko (крупно).",
+  light:"Шутливое рычание без агрессии (крупные округлые белые зубы, круглые глаза), переходящее в улыбку.",
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, medium close-up, playful mock-growl baring soft rounded white teeth, quickly melting into a warm friendly smile, mischievous sparkle in eyes, soft studio key, no horror --ar 16:9`},
+ {n:"08",tc:"0:26–0:30",img:"sit_cinema",frame:"WS · Финал",mov:"Медленный отъезд (Dolly-Out)",lens:"35mm Anamorphic",
+  dlg:"Честно заявляю, что и здесь огромная библиотека лучшего контента.",
+  obj:"Фиолетовый пуф-мешок, ведро попкорна, интерактивная стена с детскими мультфильмами.",
+  light:"БубOkko сидит на пуфе, обнимает ведёрко попкорна, указывает лапой на стену мультиков и подмигивает.",
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, sitting on a cozy purple beanbag with a striped popcorn bucket, pointing towards a massive glowing screen wall of movie posters, winking, warm ambient lighting --ar 16:9`}
+];
+
+const PAYLOAD = `{
+  "project": "Okko Kids Mascot Video",
+  "shot_number": "01",
+  "engine": "kling",
+  "aspect_ratio": "16:9",
+  "duration_seconds": 5,
+  "reference_image": "assets/frames/hero.png",
+  "reference_mode": "strict_character_reference",
+  "voice_id": "<ELEVENLABS_OR_HEYGEN_VOICE_ID>",
+  "payload": {
+    "prompt": "A cinematic 3D animated video of BubOkko, a big soft fluffy purple monster mascot named BubOkko, consistent with the provided reference images: three large eyes in one horizontal row, three expressive eyebrows, small rounded monster ears with pink inner fur, huge soft paws with four fingers and rounded paw pads, long glossy purple fur, lighter lavender belly and chest, cyan-green glowing patches on shoulders and back, short legs, small tail, kind playful smile, friendly Okko cinema-guide personality, high quality cinematic 3D animation, Pixar/DreamWorks-like softness, popping out of a glowing purple Okko portal inside a cozy dark cinema interior, waves proudly. Volumetric light, purple energy flash, soft rim light, smooth dolly-in, family-friendly",
+    "negative_prompt": "wrong character, two eyes, one eye, four eyes, extra eyes, missing third eye, missing eyebrows, extra eyebrows, no ears, horns, claws, sharp fangs, scary horror monster, blood, gore, spider, insect, robot, human in mascot costume, cheap costume, animatronic, creepy, deformed body, bad anatomy, extra arms, extra legs, no cyan-green patches, no lavender belly, flat fur, watermark, bad brand spelling"
+  }
+}`;
+
+const QA=[
+ {t:"Анатомическое соответствие",d:"Ровно 3 глаза и 3 брови? На лапах 4 пальца?"},
+ {t:"Цветовая гамма",d:"Сохранены фиолетовый #6A40FF, бирюзовый #23E6C1, розовый #FF9BD0?"},
+ {t:"Мимика и манеры",d:"Персонаж милый, дружелюбный, забавный? Нет страшных оскалов, когтей, рогов?"},
+ {t:"Стабильность ИИ",d:"Мех пушистый и объёмный всю анимацию (не «пластик»)?"},
+ {t:"Бренд-нейминг",d:"БубOkko написан верно, заглавная «O» в Okko?"},
+ {t:"Голос",d:"Озвучка из назначенного Voice ID, мягкий бас, тянет гласные?"}
+];
+
+document.getElementById('posc').textContent=POS;
+document.getElementById('negc').textContent=NEG;
+document.getElementById('payload').textContent=PAYLOAD;
+
+const bento=document.getElementById('bento'), beatsEl=document.getElementById('beats');
+SHOTS.forEach((s,i)=>{
+  const c=document.createElement('div'); c.className='card'+(s.big?' big':''); c.onclick=()=>select(i);
+  c.innerHTML=`<div class="frame"><img src="assets/frames/${s.img}.jpg" alt="SHOT ${s.n} БубOkko" loading="lazy"/></div>
+    <span class="tc">${s.tc}</span><span class="num">SHOT ${s.n}</span>
+    <div class="meta"><b>${s.frame}</b><div class="row"><span class="tagx">${s.lens.split(',')[0]}</span><span class="tagx">${s.mov.split('(')[0].trim()}</span></div></div>`;
+  bento.appendChild(c);
+  const b=document.createElement('div'); b.className='beat'; b.id='beat'+i; b.onclick=()=>select(i);
+  b.innerHTML=`<div class="bn"><span>SHOT ${s.n}</span><span>${s.tc}</span></div><p>${s.dlg}</p>`;
+  beatsEl.appendChild(b);
+});
+
+let cur=-1;
+function select(i){
+  cur=i; const s=SHOTS[i];
+  document.querySelectorAll('.beat').forEach(b=>b.classList.remove('active'));
+  document.getElementById('beat'+i).classList.add('active');
+  document.getElementById('dTitle').textContent=`SHOT ${s.n} · ${s.tc} — ${s.frame}`;
+  const note=localStorage.getItem('bub2_note_'+i)||'';
+  document.getElementById('detail').innerHTML=`
+    <img class="ref" src="assets/frames/${s.img}.jpg" alt="ref"/>
+    <div class="kv"><span>Референс</span><div style="color:var(--teal)">Канон из БубOkko_Библия — облик неизменен</div></div>
+    <div class="kv"><span>Реплика</span><div>«${s.dlg}»</div></div>
+    <div class="kv"><span>Объекты</span><div>${s.obj}</div></div>
+    <div class="kv"><span>Камера</span><div>${s.mov}</div></div>
+    <div class="kv"><span>Оптика</span><div>${s.lens}</div></div>
+    <div class="kv"><span>Стейджинг/свет</span><div>${s.light}</div></div>
+    <div class="prompt">${s.prompt}</div>
+    <textarea class="note" placeholder="Заметки режиссёра к кадру…" oninput="localStorage.setItem('bub2_note_${i}',this.value)">${note}</textarea>`;
+  drawMap(i);
+}
+
+function drawMap(active){
+  const m=document.getElementById('map'),W=1000,seg=W/SHOTS.length;
+  let h='';
+  SHOTS.forEach((s,i)=>{
+    const cx=seg*i+seg/2,cy=160,camY=320,on=i===active,col=on?'#F5A623':'#5a4a8a',vio=on?'#B58BFF':'#473873';
+    h+=`<g style="cursor:pointer" onclick="select(${i})">
+      <text x="${cx}" y="34" fill="${on?'#F5A623':'#6a6a78'}" font-size="13" text-anchor="middle" font-family="sans-serif">${s.n}</text>
+      <path d="M${cx} ${camY} L${cx-32} ${cy+18} L${cx+32} ${cy+18} Z" fill="${on?'rgba(245,166,35,.16)':'rgba(90,74,138,.1)'}" stroke="${col}" stroke-width="1.4"/>
+      <circle cx="${cx}" cy="${cy}" r="19" fill="${vio}"/>
+      <circle cx="${cx-7}" cy="${cy-3}" r="3" fill="#23E6C1"/><circle cx="${cx}" cy="${cy-5}" r="3.3" fill="#23E6C1"/><circle cx="${cx+7}" cy="${cy-3}" r="3" fill="#23E6C1"/>
+      <rect x="${cx-9}" y="${camY}" width="18" height="12" rx="2" fill="${col}"/>
+      <line x1="${cx}" y1="${cy-21}" x2="${cx}" y2="${cy-38}" stroke="#23E6C1" stroke-width="2"/><circle cx="${cx}" cy="${cy-42}" r="3" fill="#23E6C1"/></g>`;
+  });
+  m.innerHTML=h;
+}
+
+const qaEl=document.getElementById('qa');
+QA.forEach((q,i)=>{
+  const done=localStorage.getItem('bub2_qa_'+i)==='1';
+  const el=document.createElement('div'); el.className='qi'+(done?' done':'');
+  el.innerHTML=`<div class="qbox">✓</div><div><b>${q.t}</b><p>${q.d}</p></div>`;
+  el.onclick=()=>{const n=!el.classList.contains('done');el.classList.toggle('done',n);localStorage.setItem('bub2_qa_'+i,n?'1':'0');};
+  qaEl.appendChild(el);
+});
+
+function assignVoice(){
+  const v=document.getElementById('vid').value.trim();
+  document.getElementById('vdot').classList.toggle('ok',!!v);
+  document.getElementById('vmsg').textContent=v?`Voice ID назначен: ${v} · применён ко всем 8 кадрам`:'Voice ID ещё не назначен';
+}
+
+let timer=null;
+document.getElementById('play').onclick=function(){
+  if(timer){clearInterval(timer);timer=null;this.textContent='▶ Автопросмотр';return;}
+  this.textContent='⏸ Стоп';let i=(cur+1)%SHOTS.length;select(i);
+  timer=setInterval(()=>{i=(i+1)%SHOTS.length;select(i);},2600);
+};
+
+function loc(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+function cp(t,btn){navigator.clipboard.writeText(t).then(()=>{const o=btn.textContent;btn.textContent='✓ copied';setTimeout(()=>btn.textContent=o,1200);});}
+function exportMD(){
+  let md=`# БубOkko — Master Shot List (0:30, 8 кадров)\n\n| # | Тайминг | Кадр | Камера | Оптика | Реплика | Объекты |\n|---|---|---|---|---|---|---|\n`;
+  SHOTS.forEach(s=>md+=`| ${s.n} | ${s.tc} | ${s.frame} | ${s.mov.replace(/\|/g,'/')} | ${s.lens.replace(/\|/g,'/')} | ${s.dlg.replace(/\|/g,'/')} | ${s.obj.replace(/\|/g,'/')} |\n`);
+  md+=`\n## Character Lock\n**Positive:** ${POS}\n\n**Negative:** ${NEG}\n\n## Промпты (Seedance / Kling)\n`+SHOTS.map(s=>`\n### SHOT ${s.n} · ${s.tc}\n\`\`\`\n${s.prompt.replace(LOCK,POS)}\nNEGATIVE: ${NEG}\n\`\`\``).join('');
+  dl('BubOkko_ShotList.md',md);
+}
+function exportCSV(){
+  let c='Shot,Timecode,Frame,Camera,Lens,Dialogue,Objects\n';
+  SHOTS.forEach(s=>c+=`"${s.n}","${s.tc}","${s.frame}","${s.mov.replace(/"/g,"'")}","${s.lens.replace(/"/g,"'")}","${s.dlg.replace(/"/g,"'")}","${s.obj.replace(/"/g,"'")}"\n`);
+  dl('BubOkko_ShotList.csv',c);
+}
+function dl(name,txt){const b=new Blob([txt],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();}
+
+select(0);
+</script>
+</body>
+</html>
