@@ -91,7 +91,13 @@ button.primary{background:linear-gradient(135deg,var(--amber),#e0860f);color:#18
 .prompt{margin-top:12px;background:#08080a;border:1px solid var(--line);border-radius:10px;padding:12px;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#bfe9dd;white-space:pre-wrap;line-height:1.55}
 .note{width:100%;margin-top:10px;background:#08080a;border:1px solid var(--line);border-radius:10px;color:var(--txt);padding:10px;font-family:var(--font);font-size:13px;resize:vertical;min-height:60px}
 
-.map{aspect-ratio:1000/440;width:100%;max-width:920px;margin:0 auto;display:block;background:repeating-linear-gradient(0deg,#0c0c0f,#0c0c0f 23px,#121218 24px),repeating-linear-gradient(90deg,#0c0c0f,#0c0c0f 23px,#121218 24px);border:1px solid var(--line);border-radius:14px}
+.map{aspect-ratio:640/460;width:100%;display:block;background:radial-gradient(120% 120% at 50% 0%,#16121f,#0a0a0e);border:1px solid var(--line);border-radius:14px}
+.stagewrap{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;align-items:start}
+.stageshot{display:flex;flex-direction:column;gap:8px}
+.stageshot img{width:100%;border-radius:14px;border:1px solid var(--line);object-fit:cover;aspect-ratio:16/10;background:radial-gradient(120% 120% at 50% 20%,#2a1a52,#0c0716)}
+.stagecap{font-size:12.5px;color:var(--mut);line-height:1.5}
+.stagecap b{color:var(--gold)}
+@media(max-width:820px){.stagewrap{grid-template-columns:1fr}}
 .legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--mut);font-size:12px;margin-top:10px}
 .legend i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
 
@@ -176,7 +182,10 @@ button.primary{background:linear-gradient(135deg,var(--amber),#e0860f);color:#18
   </div>
 
   <div class="sec-title">Мизансцена кадра <small>вид сверху · камера, оптика, движение — по выбранному кадру</small></div>
-  <svg class="map" id="map" viewBox="0 0 1000 440" preserveAspectRatio="xMidYMid meet"></svg>
+  <div class="stagewrap">
+    <svg class="map" id="map" viewBox="0 0 640 460" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="stageshot"><img id="stageimg" alt="кадр" loading="lazy"/><div class="stagecap" id="stagecap"></div></div>
+  </div>
   <div class="legend">
     <span><i style="background:var(--vio3)"></i>БубOkko (рост ≈2.2 м)</span>
     <span><i style="background:var(--amber)"></i>Камера + конус объектива (шире = короче фокус)</span>
@@ -312,13 +321,16 @@ function select(i){
 
 function drawMap(active){
   const m=document.getElementById('map'); const s=SHOTS[active]; if(!s){m.innerHTML='';return;}
-  // --- parse cinematography from shot fields ---
-  const mm = (s.lens.match(/(\d+)\s*mm/)||[])[1] ? +(s.lens.match(/(\d+)\s*mm/)[1]) : (/macro/i.test(s.lens)?100:50);
+  // result frame beside the plan
+  const img=document.getElementById('stageimg'); const cap=document.getElementById('stagecap');
+  // --- parse cinematography ---
+  const mmM=s.lens.match(/(\d+)\s*mm/); const mm = mmM? +mmM[1] : (/macro/i.test(s.lens)?100:50);
   const fovMap=[[24,74],[28,65],[35,54],[50,40],[85,24],[100,20]];
-  let fov=40; for(const [a,f] of fovMap){ if(mm<=a){fov=f;break;} if(mm>=100)fov=20; }
+  let fov=40; for(const [a,f] of fovMap){ if(mm<=a){fov=f;break;} } if(mm>=100)fov=20;
   const fr=(s.frame.match(/ECU|MWS|MCU|WS|CU|MS|Macro/i)||['MS'])[0].toUpperCase();
-  const gapMap={ECU:70,MACRO:70,CU:108,MCU:138,MS:168,MWS:198,WS:218};
-  const gap=gapMap[fr]||168;
+  const gapMap={ECU:60,MACRO:60,CU:95,MCU:125,MS:155,MWS:185,WS:205};
+  const metMap={ECU:'0.6',MACRO:'0.4',CU:'1.0',MCU:'1.6',MS:'2.4',MWS:'3.4',WS:'5.0'};
+  const gap=gapMap[fr]||155; const meters=metMap[fr]||'2.4';
   const lc=s.mov.toLowerCase();
   let move='static';
   if(/dolly-in|наезд|push/.test(lc)) move='in';
@@ -326,46 +338,49 @@ function drawMap(active){
   else if(/track|панорам/.test(lc)) move='track';
   else if(/crane|кран/.test(lc)) move='crane';
   const moveLabel={in:'Наезд (dolly-in)',out:'Отъезд (dolly-out)',track:'Панорама / трекинг',crane:'Кран (crane)',static:'Статичный план'}[move];
-  // --- geometry (top-down) ---
-  const SX=500, SY=160;            // subject (БубOkko)
-  const camY=SY+gap;               // camera below subject on optical axis
-  const wallY=58;
-  const coneLen=camY-wallY+10;
-  const half=(fov/2)*Math.PI/180;
-  const dx=coneLen*Math.tan(half);
-  const lTopX=SX-dx, rTopX=SX+dx;
-  // --- build svg ---
+  // --- geometry (top-down), viewBox 640x460 ---
+  const SX=320, SY=175, wallY=66, camY=SY+gap;
+  const coneLen=camY-wallY+6, half=(fov/2)*Math.PI/180, dx=coneLen*Math.tan(half);
+  const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
   let h='';
-  // backdrop wall
-  h+=`<line x1="150" y1="${wallY}" x2="850" y2="${wallY}" stroke="#3a3a44" stroke-width="3"/>`;
-  h+=`<text x="500" y="${wallY-12}" fill="#8a8a96" font-size="13" text-anchor="middle" font-family="sans-serif" letter-spacing="1">ФОН · кинозал Okko</text>`;
-  for(let x=180;x<=820;x+=40){ h+=`<line x1="${x}" y1="${wallY}" x2="${x-10}" y2="${wallY-9}" stroke="#2c2c34" stroke-width="2"/>`; }
+  // room
+  h+=`<rect x="46" y="48" width="548" height="386" rx="10" fill="none" stroke="#23232c" stroke-width="1.5"/>`;
+  // poster wall (top)
+  for(let i=0;i<8;i++){const x=120+i*52; h+=`<rect x="${x}" y="${wallY-16}" width="40" height="26" rx="3" fill="#241a3e" stroke="#3a2c63" stroke-width="1"/>`;}
+  h+=`<line x1="100" y1="${wallY}" x2="540" y2="${wallY}" stroke="#4a3a7a" stroke-width="2"/>`;
+  h+=`<text x="320" y="40" fill="#8a8a96" font-size="12.5" text-anchor="middle" font-family="sans-serif" letter-spacing="1">ЭКРАН · СТЕНА ПОСТЕРОВ OKKO</text>`;
+  // seats (bottom corners)
+  for(let r=0;r<2;r++)for(let c=0;c<3;c++){const sx=70+c*30,sy=392+r*22; h+=`<rect x="${sx}" y="${sy}" width="22" height="15" rx="4" fill="#2a1530"/>`;}
+  for(let r=0;r<2;r++)for(let c=0;c<3;c++){const sx=478+c*30,sy=392+r*22; h+=`<rect x="${sx}" y="${sy}" width="22" height="15" rx="4" fill="#2a1530"/>`;}
   // lens cone
-  h+=`<path d="M${SX} ${camY} L${lTopX} ${wallY+6} L${rTopX} ${wallY+6} Z" fill="rgba(245,166,35,.12)" stroke="rgba(245,166,35,.5)" stroke-width="1.3"/>`;
-  // optical axis / eyeline (dashed teal)
-  h+=`<line x1="${SX}" y1="${SY-8}" x2="${SX}" y2="${camY-14}" stroke="#23E6C1" stroke-width="1.6" stroke-dasharray="5 5"/>`;
-  h+=`<text x="${SX+10}" y="${(SY+camY)/2}" fill="#23E6C1" font-size="12" font-family="sans-serif">взгляд в камеру</text>`;
-  // subject Bubokko (eyes face down toward camera)
-  h+=`<circle cx="${SX}" cy="${SY}" r="22" fill="#6A40FF"/>`;
-  h+=`<circle cx="${SX-8}" cy="${SY+6}" r="3.2" fill="#23E6C1"/><circle cx="${SX}" cy="${SY+8}" r="3.6" fill="#23E6C1"/><circle cx="${SX+8}" cy="${SY+6}" r="3.2" fill="#23E6C1"/>`;
+  h+=`<path d="M${SX} ${camY} L${SX-dx} ${wallY+4} L${SX+dx} ${wallY+4} Z" fill="rgba(245,166,35,.13)" stroke="rgba(245,166,35,.55)" stroke-width="1.3"/>`;
+  h+=`<text x="${SX+dx-4}" y="${wallY+24}" fill="#F5A623" font-size="11" text-anchor="end" font-family="sans-serif">${Math.round(fov)}° обзор</text>`;
+  // optical axis / eyeline
+  h+=`<line x1="${SX}" y1="${SY-6}" x2="${SX}" y2="${camY-14}" stroke="#23E6C1" stroke-width="1.6" stroke-dasharray="5 5"/>`;
+  h+=`<text x="${SX+9}" y="${(SY+camY)/2}" fill="#23E6C1" font-size="11.5" font-family="sans-serif">взгляд в камеру</text>`;
+  h+=`<text x="${SX-9}" y="${(SY+camY)/2+15}" fill="#6a6a78" font-size="11" text-anchor="end" font-family="sans-serif">≈ ${meters} м</text>`;
+  // Bubokko top-down (ears + 3 eyes facing camera)
+  h+=`<path d="M${SX-15} ${SY-14} l-5 -14 l13 7 z" fill="#5a32d8"/><path d="M${SX+15} ${SY-14} l5 -14 l-13 7 z" fill="#5a32d8"/>`;
+  h+=`<circle cx="${SX}" cy="${SY}" r="23" fill="#6A40FF"/>`;
+  h+=`<circle cx="${SX-8}" cy="${SY+7}" r="3.2" fill="#23E6C1"/><circle cx="${SX}" cy="${SY+9}" r="3.7" fill="#23E6C1"/><circle cx="${SX+8}" cy="${SY+7}" r="3.2" fill="#23E6C1"/>`;
   h+=`<text x="${SX}" y="${SY-30}" fill="#B58BFF" font-size="13" text-anchor="middle" font-family="sans-serif" font-weight="700">БубOkko</text>`;
-  h+=`<text x="${SX+30}" y="${SY+4}" fill="#6a6a78" font-size="11" font-family="sans-serif">≈2.2 м</text>`;
-  // camera icon
-  h+=`<g><rect x="${SX-16}" y="${camY}" width="32" height="20" rx="3" fill="#F5A623"/><rect x="${SX+16}" y="${camY+4}" width="9" height="12" fill="#F5A623"/><circle cx="${SX}" cy="${camY+10}" r="4" fill="#180f00"/></g>`;
-  // movement glyph
+  // camera + movement
   function arrow(x1,y1,x2,y2){const a=Math.atan2(y2-y1,x2-x1),L=9;return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#F5A623" stroke-width="2.4"/><path d="M${x2} ${y2} L${x2-L*Math.cos(a-0.4)} ${y2-L*Math.sin(a-0.4)} M${x2} ${y2} L${x2-L*Math.cos(a+0.4)} ${y2-L*Math.sin(a+0.4)}" stroke="#F5A623" stroke-width="2.4" fill="none"/>`;}
-  if(move==='in') h+=arrow(SX-40,camY+8,SX-40,SY+40);
-  else if(move==='out') h+=arrow(SX-40,SY+40,SX-40,camY+8);
-  else if(move==='track') h+=arrow(SX-70,camY+10,SX-130,camY+10)+arrow(SX+70,camY+10,SX+130,camY+10);
-  else if(move==='crane'){ h+=`<path d="M${SX-95} ${camY+14} Q ${SX-60} ${camY-40} ${SX-30} ${camY-2}" stroke="#F5A623" stroke-width="2.4" fill="none"/>`+arrow(SX-40,camY-12,SX-30,camY-2);}
-  else h+=`<text x="${SX-40}" y="${camY+15}" fill="#F5A623" font-size="11" text-anchor="end" font-family="sans-serif">🔒</text>`;
-  // camera label block
-  h+=`<text x="${SX}" y="${camY+38}" fill="#fff" font-size="14" text-anchor="middle" font-family="sans-serif" font-weight="700">${s.frame.split('·')[0].trim()} · ${mm}mm</text>`;
-  h+=`<text x="${SX}" y="${camY+56}" fill="#F5A623" font-size="12" text-anchor="middle" font-family="sans-serif">${moveLabel}</text>`;
-  // shot tag top-left
-  h+=`<text x="40" y="40" fill="#ffd27a" font-size="15" font-family="sans-serif" font-weight="800">SHOT ${s.n}</text>`;
-  h+=`<text x="40" y="60" fill="#6a6a78" font-size="12" font-family="sans-serif">${s.tc}</text>`;
+  h+=`<g><rect x="${SX-17}" y="${camY}" width="34" height="21" rx="3" fill="#F5A623"/><rect x="${SX+17}" y="${camY+5}" width="9" height="12" fill="#F5A623"/><circle cx="${SX}" cy="${camY+10}" r="4" fill="#180f00"/></g>`;
+  if(move==='in') h+=arrow(SX-42,camY+6,SX-42,SY+42);
+  else if(move==='out') h+=arrow(SX-42,SY+42,SX-42,camY+6);
+  else if(move==='track') h+=arrow(SX-72,camY+10,SX-118,camY+10)+arrow(SX+72,camY+10,SX+118,camY+10);
+  else if(move==='crane') h+=`<path d="M${SX-92} ${camY+12} Q ${SX-58} ${camY-34} ${SX-32} ${camY-2}" stroke="#F5A623" stroke-width="2.4" fill="none"/>`+arrow(SX-40,camY-12,SX-32,camY-2);
+  else h+=`<rect x="${SX-54}" y="${camY+3}" width="14" height="14" rx="2" fill="none" stroke="#F5A623" stroke-width="2"/>`;
+  h+=`<text x="${SX}" y="${camY+40}" fill="#fff" font-size="14.5" text-anchor="middle" font-family="sans-serif" font-weight="700">${esc(s.frame.split('·')[0].trim())} · ${mm}mm</text>`;
+  h+=`<text x="${SX}" y="${camY+58}" fill="#F5A623" font-size="12" text-anchor="middle" font-family="sans-serif">${moveLabel}</text>`;
+  // shot tag
+  h+=`<text x="60" y="74" fill="#ffd27a" font-size="15" font-family="sans-serif" font-weight="800">SHOT ${s.n}</text>`;
+  h+=`<text x="60" y="92" fill="#6a6a78" font-size="11.5" font-family="sans-serif">${s.tc}</text>`;
   m.innerHTML=h;
+  // result frame
+  if(img){ img.src=`assets/gen/${s.n}.jpg`; img.alt=`кадр ${s.n}`; }
+  if(cap) cap.innerHTML=`<b>Результат этого сетапа</b> · ${esc(s.frame)} · ${mm}mm · ${moveLabel.toLowerCase()}`;
 }
 
 const qaEl=document.getElementById('qa');
