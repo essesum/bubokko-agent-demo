@@ -285,8 +285,7 @@ document.getElementById('payload').textContent=PAYLOAD;
 const beatsEl=document.getElementById('beats');
 SHOTS.forEach((s,i)=>{
   const b=document.createElement('div'); b.className='beat'; b.id='beat'+i; b.onclick=()=>select(i);
-  b.innerHTML=`<div class="bn"><span>SHOT ${s.n}</span><span>${s.tc}</span></div>
-    <div class="beatrow"><img class="genthumb" src="assets/gen/${s.n}.jpg" alt="сгенерированный кадр ${s.n}" loading="lazy"/><p>${s.dlg}</p></div>`;
+  b.innerHTML=`<div class="bn"><span>SHOT ${s.n}</span><span>${s.tc}</span></div><p>${s.dlg}</p>`;
   beatsEl.appendChild(b);
 });
 
