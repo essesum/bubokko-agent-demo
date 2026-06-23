@@ -168,10 +168,7 @@ button.primary{background:linear-gradient(135deg,var(--amber),#e0860f);color:#18
     <div class="lockbox neg"><h4>✕ Отрицательный (Negative) Lock <button class="copy" onclick="cp(NEG,this)">copy</button></h4><div class="code" id="negc"></div></div>
   </div>
 
-  <div class="sec-title">Покадровая раскадровка <small>реальные рендеры из Библии · клик — детали</small></div>
-  <div class="bento" id="bento"></div>
-
-  <div class="sec-title">Сценарий и стейджинг <small>монолог по кадрам</small></div>
+  <div class="sec-title">Сценарий и стейджинг <small>монолог по кадрам · клик — детали</small></div>
   <div class="dual">
     <div class="pane"><h3>Монолог по кадрам</h3><div id="beats"></div></div>
     <div class="pane detail"><h3 id="dTitle">Выбери кадр</h3><div id="detail"></div></div>
@@ -284,13 +281,8 @@ document.getElementById('posc').textContent=POS;
 document.getElementById('negc').textContent=NEG;
 document.getElementById('payload').textContent=PAYLOAD;
 
-const bento=document.getElementById('bento'), beatsEl=document.getElementById('beats');
+const beatsEl=document.getElementById('beats');
 SHOTS.forEach((s,i)=>{
-  const c=document.createElement('div'); c.className='card'+(s.big?' big':''); c.onclick=()=>select(i);
-  c.innerHTML=`<div class="frame"><img src="assets/frames/${s.img}.jpg" alt="SHOT ${s.n} БубOkko" loading="lazy"/></div>
-    <span class="tc">${s.tc}</span><span class="num">SHOT ${s.n}</span>
-    <div class="meta"><b>${s.frame}</b><div class="row"><span class="tagx">${s.lens.split(',')[0]}</span><span class="tagx">${s.mov.split('(')[0].trim()}</span></div></div>`;
-  bento.appendChild(c);
   const b=document.createElement('div'); b.className='beat'; b.id='beat'+i; b.onclick=()=>select(i);
   b.innerHTML=`<div class="bn"><span>SHOT ${s.n}</span><span>${s.tc}</span></div>
     <div class="beatrow"><img class="genthumb" src="assets/gen/${s.n}.jpg" alt="сгенерированный кадр ${s.n}" loading="lazy"/><p>${s.dlg}</p></div>`;
