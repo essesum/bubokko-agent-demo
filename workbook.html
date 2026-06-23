@@ -81,7 +81,10 @@ button.primary{background:linear-gradient(135deg,var(--amber),#e0860f);color:#18
 .beat:hover{border-color:var(--vio)}
 .beat.active{border-color:var(--amber);background:#1d1606}
 .beat .bn{font-size:10px;color:var(--amber);letter-spacing:1px;display:flex;justify-content:space-between}
-.beat p{margin:5px 0 0;font-size:14px}
+.beat p{margin:0;font-size:14px}
+.beatrow{display:flex;gap:12px;align-items:center;margin-top:8px}
+.genthumb{width:120px;height:68px;flex:0 0 auto;object-fit:cover;border-radius:9px;border:1px solid var(--line);background:#0c0716}
+@media(max-width:560px){.genthumb{width:88px;height:52px}}
 .detail img.ref{width:100%;max-height:240px;object-fit:contain;background:radial-gradient(120% 120% at 50% 20%,#2a1a52,#0c0716);border:1px solid var(--line);border-radius:12px;margin-bottom:12px}
 .kv{display:grid;grid-template-columns:120px 1fr;gap:6px 12px;font-size:13px;margin-bottom:6px}
 .kv span{color:var(--mut)}
@@ -289,7 +292,8 @@ SHOTS.forEach((s,i)=>{
     <div class="meta"><b>${s.frame}</b><div class="row"><span class="tagx">${s.lens.split(',')[0]}</span><span class="tagx">${s.mov.split('(')[0].trim()}</span></div></div>`;
   bento.appendChild(c);
   const b=document.createElement('div'); b.className='beat'; b.id='beat'+i; b.onclick=()=>select(i);
-  b.innerHTML=`<div class="bn"><span>SHOT ${s.n}</span><span>${s.tc}</span></div><p>${s.dlg}</p>`;
+  b.innerHTML=`<div class="bn"><span>SHOT ${s.n}</span><span>${s.tc}</span></div>
+    <div class="beatrow"><img class="genthumb" src="assets/gen/${s.n}.jpg" alt="сгенерированный кадр ${s.n}" loading="lazy"/><p>${s.dlg}</p></div>`;
   beatsEl.appendChild(b);
 });
 
@@ -301,8 +305,8 @@ function select(i){
   document.getElementById('dTitle').textContent=`SHOT ${s.n} · ${s.tc} — ${s.frame}`;
   const note=localStorage.getItem('bub2_note_'+i)||'';
   document.getElementById('detail').innerHTML=`
-    <img class="ref" src="assets/frames/${s.img}.jpg" alt="ref"/>
-    <div class="kv"><span>Референс</span><div style="color:var(--teal)">Канон из БубOkko_Библия — облик неизменен</div></div>
+    <img class="ref" src="assets/gen/${s.n}.jpg" alt="сгенерированный кадр ${s.n}"/>
+    <div class="kv"><span>Сгенерировано</span><div style="color:var(--teal)">Gemini 3.1 Flash (Nano Banana 2) · по канону БубOkko</div></div>
     <div class="kv"><span>Реплика</span><div>«${s.dlg}»</div></div>
     <div class="kv"><span>Объекты</span><div>${s.obj}</div></div>
     <div class="kv"><span>Камера</span><div>${s.mov}</div></div>
