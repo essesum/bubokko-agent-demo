@@ -211,14 +211,14 @@ button.primary{background:linear-gradient(135deg,var(--amber),#e0860f);color:#18
   </div>
 
   <div class="foot">
-    Идентичность зафиксирована по «БубOkko_Библия»: 3 глаза · 3 брови · 4 пальца · фиолетово-синий мех с бирюзовыми светящимися пятнами · лавандовый живот · розовые уши · жест «забубокко».<br/>
+    Идентичность зафиксирована по «БубOkko_Библия»: 3 глаза · 4 пальца · фиолетово-синий мех с бирюзовыми светящимися пятнами · лавандовый живот · розовые уши · жест «забубокко».<br/>
     Character Lock и Negative Lock неизменны во всех кадрах. Заметки режиссёра и чек-лист сохраняются локально в браузере.
   </div>
 </div>
 
 <script>
-const POS = `BubOkko, a large fluffy purple-blue monster mascot, round pear-shaped body, long realistic fur, three big eyes in a horizontal row, three expressive eyebrows, small cat-like ears with pink inner fur, big soft paws with four fingers, short legs, long fluffy tail, light lavender belly fur, teal-green fur patches on shoulders and sides, wide warm smile with rounded white teeth, playful kind expression, cinematic 3D animation, Pixar/DreamWorks quality.`;
-const NEG = `wrong character, two eyes, one eye, four eyes, extra eyes, missing third eye, missing eyebrows, extra eyebrows, no ears, horns, claws, sharp fangs, scary horror monster, blood, gore, spider, insect, robot, human in mascot costume, cheap costume, animatronic, creepy, deformed body, bad anatomy, extra arms, extra legs, no cyan-green patches, no lavender belly, flat fur, watermark, bad brand spelling`;
+const POS = `BubOkko, a large fluffy purple-blue monster mascot, round pear-shaped body, long realistic fur, three big eyes in a horizontal row, small cat-like ears with pink inner fur, big soft paws with four fingers, short legs, long fluffy tail, light lavender belly fur, teal-green fur patches on shoulders and sides, wide warm smile with rounded white teeth, playful kind expression, cinematic 3D animation, Pixar/DreamWorks quality.`;
+const NEG = `wrong character, two eyes, one eye, four eyes, extra eyes, missing third eye, no ears, horns, claws, sharp fangs, scary horror monster, blood, gore, spider, insect, robot, human in mascot costume, cheap costume, animatronic, creepy, deformed body, bad anatomy, extra arms, extra legs, no cyan-green patches, no lavender belly, flat fur, watermark, bad brand spelling`;
 const LOCK = "[Character Lock]";
 
 const SHOTS=[
@@ -231,7 +231,7 @@ const SHOTS=[
   dlg:"По легенде, я появился после бубической вспышки, которая произошла среди рыцарей IT. Пусть история и остаётся такой красивой.",
   obj:"Размытый кинозал, БубOkko.",
   light:"Мягкий ключевой свет слева, бирюзовый rim-light по краю шерсти. Доверительный взгляд в камеру.",
-  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, talking warmly straight to camera, friendly smile, eyebrows raised, inside a blurred cinema theater background, soft studio key light with violet fill and teal rim, realistic fur simulation --ar 16:9`},
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, talking warmly straight to camera, friendly smile, inside a blurred cinema theater background, soft studio key light with violet fill and teal rim, realistic fur simulation --ar 16:9`},
  {n:"03",tc:"0:08–0:11",img:"approve",frame:"MS · Поясной",mov:"Лёгкий наезд",lens:"50mm Prime",
   dlg:"А моё предназначение — быть настоящим брэнд-персонажем и проводником по детскому профилю Okko.",
   obj:"Фирменная лапа с жестом «забубокко», фиолетовый фон.",
@@ -240,13 +240,13 @@ const SHOTS=[
  {n:"04",tc:"0:11–0:14",img:"mischief",frame:"CU · Крупный",mov:"Лёгкий наезд",lens:"50mm, f/2.0",
   dlg:"Давай называть роскошь своими именами. Пожалуйста.",
   obj:"БубOkko (крупно лицо), пушистые ушки.",
-  light:"Акцент на мимику. Брови взлетают вверх, розовая внутренняя часть ушей слегка подёргивается.",
-  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, close-up, mischievous friendly smile, expressive eyebrows raising, cat-like ears with pink inner fur twitching playfully, warm cinema lighting, shallow depth of field --ar 16:9`},
+  light:"Акцент на мимику. Розовая внутренняя часть ушей слегка подёргивается.",
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, close-up, mischievous friendly smile, cat-like ears with pink inner fur twitching playfully, warm cinema lighting, shallow depth of field --ar 16:9`},
  {n:"05",tc:"0:14–0:18",img:"face",big:true,frame:"ECU · Hero identity",mov:"Сверхкрупный, лёгкий наезд",lens:"85mm Prime, f/1.8",
-  dlg:"И три глаз, и три брови, и моя великолепная шерсть. Это всё вместе моя визитная карточка...",
-  obj:"Три глаза, три брови (сверхкрупно), пушистый лоб.",
-  light:"Глаза влажные с яркими бликами. Брови двигаются по очереди («танцуют»).",
-  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, extreme close-up of face, three large oval turquoise eyes with wet catchlights, three shaggy eyebrows waving in a playful dance, warm top light, detailed fur texture --ar 16:9`},
+  dlg:"И три глаз, и моя великолепная шерсть. Это всё вместе моя визитная карточка...",
+  obj:"Три глаза (сверхкрупно), пушистый лоб.",
+  light:"Глаза влажные с яркими бликами.",
+  prompt:`A cinematic 3D animated video of BubOkko, a large fluffy purple-blue monster mascot ${LOCK}, extreme close-up of face, three large oval turquoise eyes with wet catchlights, warm top light, detailed fur texture --ar 16:9`},
  {n:"06",tc:"0:18–0:21",img:"paw",frame:"Macro CU",mov:"Горизонтальное панорамирование вдоль лапы",lens:"Macro",
   dlg:"...и суперспособность, чтобы лучше видеть самые крутые мультики.",
   obj:"Мех БубOkko, мягкая лапа, бирюзовые неоновые пятна.",
@@ -274,13 +274,13 @@ const PAYLOAD = `{
   "reference_mode": "strict_character_reference",
   "voice_id": "<ELEVENLABS_OR_HEYGEN_VOICE_ID>",
   "payload": {
-    "prompt": "A cinematic 3D animated video of BubOkko, a big soft fluffy purple monster mascot named BubOkko, consistent with the provided reference images: three large eyes in one horizontal row, three expressive eyebrows, small rounded monster ears with pink inner fur, huge soft paws with four fingers and rounded paw pads, long glossy purple fur, lighter lavender belly and chest, cyan-green glowing patches on shoulders and back, short legs, small tail, kind playful smile, friendly Okko cinema-guide personality, high quality cinematic 3D animation, Pixar/DreamWorks-like softness, popping out of a glowing purple Okko portal inside a cozy dark cinema interior, waves proudly. Volumetric light, purple energy flash, soft rim light, smooth dolly-in, family-friendly",
-    "negative_prompt": "wrong character, two eyes, one eye, four eyes, extra eyes, missing third eye, missing eyebrows, extra eyebrows, no ears, horns, claws, sharp fangs, scary horror monster, blood, gore, spider, insect, robot, human in mascot costume, cheap costume, animatronic, creepy, deformed body, bad anatomy, extra arms, extra legs, no cyan-green patches, no lavender belly, flat fur, watermark, bad brand spelling"
+    "prompt": "A cinematic 3D animated video of BubOkko, a big soft fluffy purple monster mascot named BubOkko, consistent with the provided reference images: three large eyes in one horizontal row, small rounded monster ears with pink inner fur, huge soft paws with four fingers and rounded paw pads, long glossy purple fur, lighter lavender belly and chest, cyan-green glowing patches on shoulders and back, short legs, small tail, kind playful smile, friendly Okko cinema-guide personality, high quality cinematic 3D animation, Pixar/DreamWorks-like softness, popping out of a glowing purple Okko portal inside a cozy dark cinema interior, waves proudly. Volumetric light, purple energy flash, soft rim light, smooth dolly-in, family-friendly",
+    "negative_prompt": "wrong character, two eyes, one eye, four eyes, extra eyes, missing third eye, no ears, horns, claws, sharp fangs, scary horror monster, blood, gore, spider, insect, robot, human in mascot costume, cheap costume, animatronic, creepy, deformed body, bad anatomy, extra arms, extra legs, no cyan-green patches, no lavender belly, flat fur, watermark, bad brand spelling"
   }
 }`;
 
 const QA=[
- {t:"Анатомическое соответствие",d:"Ровно 3 глаза и 3 брови? На лапах 4 пальца?"},
+ {t:"Анатомическое соответствие",d:"Ровно 3 глаза? На лапах 4 пальца?"},
  {t:"Цветовая гамма",d:"Сохранены фиолетовый #6A40FF, бирюзовый #23E6C1, розовый #FF9BD0?"},
  {t:"Мимика и манеры",d:"Персонаж милый, дружелюбный, забавный? Нет страшных оскалов, когтей, рогов?"},
  {t:"Стабильность ИИ",d:"Мех пушистый и объёмный всю анимацию (не «пластик»)?"},
