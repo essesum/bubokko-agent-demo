@@ -42,9 +42,9 @@ h2{font-size:clamp(25px,3.8vw,46px);line-height:1.12;font-weight:800;letter-spac
 .fact span{font-size:12px;color:var(--mut)}
 
 .bento{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:min(1100px,94vw);margin-top:30px}
-.cell{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:radial-gradient(120% 120% at 50% 18%,#2a1a52,#0b0716);aspect-ratio:1}
-.cell.wide{grid-column:span 2;aspect-ratio:2}
-.cell img{width:100%;height:100%;object-fit:contain;display:block}
+.cell{position:relative;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:radial-gradient(120% 120% at 50% 18%,#2a1a52,#0b0716);aspect-ratio:16/9}
+.cell.wide{grid-column:span 2}
+.cell img{width:100%;height:100%;object-fit:cover;display:block}
 .cell .cap{position:absolute;left:0;right:0;bottom:0;padding:8px 10px;font-size:11px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.85));text-align:left}
 .cell .cap b{color:var(--gold)}
 
@@ -175,7 +175,7 @@ h2{font-size:clamp(25px,3.8vw,46px);line-height:1.12;font-weight:800;letter-spac
     <h2>Это срежиссировано, а не «сгенерировано наугад»</h2>
     <p class="lead">Реальные кадры, сгенерированные агентом по библии БубOkko. Каждый продуман: ракурс, оптика, свет, эмоция — и проверен на канон.</p>
     <div class="bento">
-      <div class="cell wide"><img src="assets/gen/01.jpg" alt="кадр 01" loading="lazy"/><div class="cap"><b>01</b> · WS · появление из портала</div></div>
+      <div class="cell"><img src="assets/gen/01.jpg" alt="кадр 01" loading="lazy"/><div class="cap"><b>01</b> · WS · появление из портала</div></div>
       <div class="cell"><img src="assets/gen/02.jpg" alt="кадр 02" loading="lazy"/><div class="cap"><b>02</b> · MS · к камере</div></div>
       <div class="cell"><img src="assets/gen/03.jpg" alt="кадр 03" loading="lazy"/><div class="cap"><b>03</b> · предназначение</div></div>
       <div class="cell"><img src="assets/gen/04.jpg" alt="кадр 04" loading="lazy"/><div class="cap"><b>04</b> · CU · мимика</div></div>
